@@ -17,7 +17,7 @@ device_state = {
     ]
 }
 
-# ----------- Utility Functions -----------
+# Utility Functions
 
 def generate_password(serial):
     hash_obj = hashlib.sha256(serial.encode())
@@ -26,7 +26,7 @@ def generate_password(serial):
 def is_authed(req):
     return req.headers.get("Authorization") == device_state["auth_token"]
 
-# ----------- API Endpoints -----------
+# API Endpoints
 
 # /info (public)
 @app.route("/info", methods=["GET"])
@@ -96,3 +96,28 @@ def spoof():
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
+    
+#------------- Code for API Attack ---------------
+# Simulated hardcoded device ID
+DEVICE_ID = "603980032"
+
+# Power state variable
+device_state["powerForcedOff"] = False
+
+@app.route(f"/ivp/mod/{DEVICE_ID}/mode/power", methods=["GET"])
+def get_power_state():
+    return jsonify({
+        "powerForcedOff": device_state["powerForcedOff"]
+    })
+
+@app.route(f"/ivp/mod/{DEVICE_ID}/mode/power", methods=["POST"])
+def set_power_state():
+    data = request.json
+    forced_off = data.get("powerForcedOff")
+    if isinstance(forced_off, bool):
+        device_state["powerForcedOff"] = forced_off
+        return jsonify({
+            "message": f"Power state updated. Forced off: {forced_off}"
+        })
+    return jsonify({"error": "Invalid or missing parameter"}), 400
+
