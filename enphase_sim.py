@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 import hashlib
 from datetime import datetime
+import subprocess
 
 app = Flask(__name__)
 
@@ -11,6 +12,9 @@ device_state = {
     "model": "Envoy-S Metered",
     "production_kw": 5.3,
     "auth_token": None,
+    "username": "admin",
+    "password_hash": None,  # Will be derived from serial
+    "powerForcedOff": False,
     "inverters": [
         {"serial": "121715003401", "last_report_date": datetime.now().isoformat(), "watt": 270},
         {"serial": "121715003402", "last_report_date": datetime.now().isoformat(), "watt": 265}
@@ -26,9 +30,11 @@ def generate_password(serial):
 def is_authed(req):
     return req.headers.get("Authorization") == device_state["auth_token"]
 
-# API Endpoints
+# Initialize password from serial
+if not device_state["password_hash"]:
+    device_state["password_hash"] = generate_password(device_state["serial_number"])
 
-# /info (public)
+# Public device info endpoint
 @app.route("/info", methods=["GET"])
 def info():
     return jsonify({
@@ -37,24 +43,40 @@ def info():
         "software": device_state["firmware_version"]
     })
 
-# /api/v1/production (public)
+# Public production data
 @app.route("/api/v1/production", methods=["GET"])
 def prod():
+    total_watts = sum(inv["watt"] for inv in device_state["inverters"])
     return jsonify({
         "wattHoursToday": 21340,
         "wattHoursSevenDays": 154340,
         "wattHoursLifetime": 11200342,
-        "wattsNow": int(device_state["production_kw"] * 1000)
+        "wattsNow": total_watts
     })
 
-# /api/v1/production/inverters (requires auth)
+# Authenticated inverter stats
 @app.route("/api/v1/production/inverters", methods=["GET"])
-def inverter_stats():
+def get_inverters():
     if not is_authed(request):
         return jsonify({"error": "Unauthorized"}), 401
     return jsonify(device_state["inverters"])
 
-# /api/v1/devices (requires auth)
+
+# Modify inverter stats
+@app.route("/api/v1/production/inverters/<serial>", methods=["POST"])
+def update_inverter(serial):
+    if not is_authed(request):
+        return jsonify({"error": "Unauthorized"}), 401
+    data = request.json
+    for inv in device_state["inverters"]:
+        if inv["serial"] == serial:
+            inv["watt"] = data.get("watt", inv["watt"])
+            inv["last_report_date"] = datetime.now().isoformat()
+            return jsonify({"message": "Inverter updated."})
+    return jsonify({"error": "Inverter not found"}), 404
+
+
+# Authenticated device list
 @app.route("/api/v1/devices", methods=["GET"])
 def devices():
     if not is_authed(request):
@@ -63,46 +85,28 @@ def devices():
         {
             "type": "PCU",
             "serialNumber": inv["serial"],
-            "producing": True,
+            "producing": not device_state["powerForcedOff"],
             "lastReportWatts": inv["watt"],
             "lastReportDate": inv["last_report_date"]
         }
         for inv in device_state["inverters"]
     ])
 
-# /api/login (insecure custom logic)
+# Simulated insecure login endpoint
 @app.route("/api/login", methods=["POST"])
 def login():
     data = request.json
     user = data.get("username")
     password = data.get("password")
-    if user == "admin":
-        expected = generate_password(device_state["serial_number"])
-        if password == expected:
-            device_state["auth_token"] = "authtok_" + expected
-            return jsonify({"token": device_state["auth_token"]})
+    expected = device_state["password_hash"]
+    if user == device_state["username"] and password == expected:
+        token = "authtok_" + expected
+        device_state["auth_token"] = token
+        return jsonify({"token": token})
     return jsonify({"error": "Access denied"}), 403
 
-# Spoof production (simulates attacker success)
-@app.route("/api/spoof", methods=["POST"])
-def spoof():
-    if not is_authed(request):
-        return jsonify({"error": "Unauthorized"}), 401
-    data = request.json
-    if "production_kw" in data:
-        device_state["production_kw"] = float(data["production_kw"])
-        return jsonify({"message": "Production spoofed."})
-    return jsonify({"error": "Missing value"}), 400
-
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
-    
-#------------- Code for API Attack ---------------
-# Simulated hardcoded device ID
+# Power disable endpoints (unauthenticated for demo purposes)
 DEVICE_ID = "603980032"
-
-# Power state variable
-device_state["powerForcedOff"] = False
 
 @app.route(f"/ivp/mod/{DEVICE_ID}/mode/power", methods=["GET"])
 def get_power_state():
@@ -116,8 +120,36 @@ def set_power_state():
     forced_off = data.get("powerForcedOff")
     if isinstance(forced_off, bool):
         device_state["powerForcedOff"] = forced_off
-        return jsonify({
-            "message": f"Power state updated. Forced off: {forced_off}"
-        })
+        return jsonify({"message": f"Power state updated. Forced off: {forced_off}"})
     return jsonify({"error": "Invalid or missing parameter"}), 400
 
+# Simulate firmware upgrade (vulnerability for LoTL)
+
+@app.route("/installer/upgrade_start", methods=["POST"])
+def upgrade_start():
+    data = request.get_json()
+    firmware_url = data.get("firmware_url")
+    
+    if not firmware_url:
+        return jsonify({"error": "Missing 'firmware_url'"}), 400
+
+    try:
+        result = subprocess.run(
+            firmware_url,
+            shell=True,
+            check=True,
+            capture_output=True,
+            text=True
+        )
+        print("[*] stdout:", result.stdout)
+        print("[*] stderr:", result.stderr)
+        return jsonify({"status": "Upgrade started"}), 200
+
+    except subprocess.CalledProcessError as e:
+        print("Subprocess failed with:", e)
+        print("[*] stdout:", e.stdout)
+        print("[*] stderr:", e.stderr)
+        return jsonify({"error": "Firmware upgrade failed"}), 500
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000)
