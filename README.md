@@ -33,5 +33,5 @@ This project simulates attacks against the Enphase Gateway API, inspired by real
 
 ### `utils/`
 - Helper utilities and shared code.
-  - `loggger.py`: Centralized logging module.
+  - `logger.py`: Centralized logging module.
 ---
