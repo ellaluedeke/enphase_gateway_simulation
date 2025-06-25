@@ -10,12 +10,12 @@ Components:
 - enphase_sim.py : Simulated Flask server mimicking Enphase Gateway
 - run_attack.py : Command Line Interface to run selected attacks using --mode
 - logs/
-      - attack_log.txt : Output logs from attack
+- attack_log.txt : Output logs from attack
 - attacks/
-      - _init_.py
-      - api_spoof.py : Spoofs energy production data
-      - power_disable.py : Remotely disables power production
-  - utils/
-      - loggger.py : Logging utility
+- _init_.py
+- api_spoof.py : Spoofs energy production data
+- power_disable.py : Remotely disables power production
+- utils/
+- loggger.py : Logging utility
 
 ------------------------------------------------
