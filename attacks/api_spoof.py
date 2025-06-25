@@ -1,6 +1,6 @@
 import requests
 import hashlib
-from utils.logger import log_message  # Assuming log_message is the logging function
+from utils.logger import log_message
 
 TARGET = "http://localhost:5000"
 
