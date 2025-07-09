@@ -19,6 +19,8 @@ device_state = {
         {"serial": "121715003401", "last_report_date": datetime.now().isoformat(), "watt": 270},
         {"serial": "121715003402", "last_report_date": datetime.now().isoformat(), "watt": 265}
     ]
+    "firmware_version": "v5.10.65",
+    "auth_mode": "strong",  # strong or weak
 }
 
 # Utility Functions
@@ -128,28 +130,28 @@ def set_power_state():
 @app.route("/installer/upgrade_start", methods=["POST"])
 def upgrade_start():
     data = request.get_json()
-    firmware_url = data.get("firmware_url")
-    
-    if not firmware_url:
-        return jsonify({"error": "Missing 'firmware_url'"}), 400
+    firmware_url = data.get("firmware_url", "").lower()
 
-    try:
-        result = subprocess.run(
-            firmware_url,
-            shell=True,
-            check=True,
-            capture_output=True,
-            text=True
-        )
-        print("[*] stdout:", result.stdout)
-        print("[*] stderr:", result.stderr)
-        return jsonify({"status": "Upgrade started"}), 200
+    if "v4.2.11" in firmware_url:
+        device_state["firmware_version"] = "v4.2.11"
+        device_state["auth_mode"] = "weak"
+        return jsonify({
+            "status": "Firmware downgraded",
+            "version": "v4.2.11",
+            "message": "Legacy version enabled weak authentication (e.g., default password)."
+        }), 200
 
-    except subprocess.CalledProcessError as e:
-        print("Subprocess failed with:", e)
-        print("[*] stdout:", e.stdout)
-        print("[*] stderr:", e.stderr)
-        return jsonify({"error": "Firmware upgrade failed"}), 500
+    elif "v5.10.65" in firmware_url:
+        device_state["firmware_version"] = "v5.10.65"
+        device_state["auth_mode"] = "strong"
+        return jsonify({
+            "status": "Firmware upgraded to latest",
+            "version": "v5.10.65",
+            "message": "System is secure"
+        }), 200
+
+    else:
+        return jsonify({"error": "Unsupported or unknown firmware image"}), 400
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
