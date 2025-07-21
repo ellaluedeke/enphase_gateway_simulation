@@ -18,7 +18,7 @@ device_state = {
     "inverters": [
         {"serial": "121715003401", "last_report_date": datetime.now().isoformat(), "watt": 270},
         {"serial": "121715003402", "last_report_date": datetime.now().isoformat(), "watt": 265}
-    ]
+    ],
     "firmware_version": "v5.10.65",
     "auth_mode": "strong",  # strong or weak
 }
