@@ -20,6 +20,12 @@ This project simulates attacks against the Enphase Gateway API, inspired by real
 ### `run_attack.py`
 - Command line interface tool to execute different attack modes using the `--mode` flag.
 
+### `attack_templates/`
+- Code templates provided for students to recreate the attacks.
+  - `spoof_template.py`
+  - `disable_template.py`
+  - `lotl_template.py`
+  - 
 ### `logs/`
 - Stores all logs generated during simulated attacks.
   - `attack_log.txt` : Output log file that records attack events and timestamps.
