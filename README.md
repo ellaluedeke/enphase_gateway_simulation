@@ -2,6 +2,8 @@
 
 This project simulates attacks against the Enphase Gateway API, inspired by real-world vulnerabilities.
 
+Presented in the 29th Colloquium: https://cisse.info/e/29th/colloquium/
+
 **Reference Attacks:**
 - *Spoofing Energy Production*:  
   [Hacking a Solar Power Controller and Pretending to Generate a Gigawatt](https://community.cadence.com/cadence_blogs_8/b/breakfast-bytes/posts/hacking-a-solar-power-controller-and-pretending-to-generate-a-gigawatt)
